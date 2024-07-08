@@ -64,34 +64,38 @@ class FiveLetters:
         clauses = []
         for i in range(WORD_LENGTH):
             letter, color = guess[i], color_string[i]
+            # reminder: we use `NOT re.match(pattern, word)` to detect VALID words in the dictionary
+            # since `A and B and C == not (A or B or C)` we can compose one pattern from an arbitrary collection of simple sub-patterns using or operators
             match color:
                 case 'g':
                     clauses.append( '^' + '[a-z]'*i + f'[^{letter}]' + '[a-z]'*(WORD_LENGTH-1-i) + '$' )
                     # will FAIL if the ith letter is _
-                    # example: '^[a-z][a-z][^x][a-z][a-z]$'
+                    # example: '^[a-z][a-z][^_][a-z][a-z]$'
                 case 'y':
                     clauses.append( '^' + '[a-z]'*i + letter + '[a-z]'*(WORD_LENGTH-1-i) + '$' )
                     # will FAIL if the ith letter is NOT _
-                    # example: '^[a-z][a-z]x[a-z][a-z]$'
+                    # example: '^[a-z][a-z]_[a-z][a-z]$'
                     if relevant_count_dict[letter] == 1:
                         clauses.append(f'^[^{letter}]{{5}}$')
                         # will FAIL if ANY letter is _
-                        # example: '^[^x]{5}$'
+                        # example: '^[^_]{5}$'
                     elif relevant_count_dict[letter] == 2:
                         clauses.append(f'^[^{letter}]*{letter}[^{letter}]*$')
                         # will FAIL if 2 letters are _
-                        # example: '^[^x]*x[^x]*$'
+                        # (trips are impossible in 5 letter words in english)
+                        # example: '^[^_]*_[^_]*$'
                     else:
                         logging.warning('trips? impossible...')
                 case 'b':
                     if relevant_count_dict[letter] == 0:
-                        clauses.append(f'{letter}')
+                        clauses.append(f'^[^{letter}]*{letter}[a-z]*$')
                         # will FAIL if NO letters are _
-                        # example: 'x'
+                        # example: '^[^_]*_[a-z]*$'
                     elif relevant_count_dict[letter] == 1:
-                        clauses.append(f'{letter}[^{letter}]*{letter}')
+                        clauses.append(f'^[^{letter}]*{letter}[^{letter}]*{letter}[^{letter}]*$')
                         # will FAIL if 1 letter is _
-                        # example: 'x[^x]*x'
+                        # (trips are impossible in 5 letter words in english)
+                        # example: '^[^_]*_[^_]*_[^_]*$'
                     else:
                         logging.warning('trips? impossible...')
         return '|'.join(clauses)
@@ -148,4 +152,4 @@ class FiveLetters:
 
 if __name__ == '__main__':
     fl = FiveLetters()
-    fl.live_analysis()
+    fl.live_analysis(ws_print_condition=50)
