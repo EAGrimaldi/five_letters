@@ -13,7 +13,7 @@ WS_PRINT_MAX = 100
 
 class FiveLetters:
     def __init__(self) -> None:
-        with open(Path(__file__).parent / 'five_letters_clean.json', 'r') as data_file:
+        with open(Path(__file__).parent / 'five_letters_common.json', 'r') as data_file:
             self.data = json.load(data_file)
             logging.warning(f'loaded {len(self.data)} five letter words from Datamuse. note: Datamuse contains many names, acronyms, etc that do not qualify as normal words.')
             self.reset_workspace()
@@ -114,10 +114,10 @@ class FiveLetters:
             info_gained = self.apply_guess(guess, color_string)
             total_info_gained += info_gained
             print(f'guessed {guess}, giving {color_string}')
-            if len(self.workspace) <= ws_print_condition:
+            print(f'\t{len(self.workspace)} words remaining')
+            if 1 < len(self.workspace) <= ws_print_condition:
                 for element in self.workspace:
                     print(f'\t\t{element["word"]}')
-            print(f'\t{len(self.workspace)} words remaining')
             print(f'\t{info_gained} bits of information gained')
             print(f'\t{total_info_gained} total bits of information gained')
         final_message = f'solved in {len(guesses)} - {self.final_messages[len(guesses)]}' if guesses[-1] == answer else self.final_messages[-1]
@@ -135,10 +135,10 @@ class FiveLetters:
             info_gained = self.apply_guess(guess, color_string)
             total_info_gained += info_gained
             print(f'guessed {guess}, giving {color_string}')
-            if len(self.workspace) <= ws_print_condition:
+            print(f'\t{len(self.workspace)} words remaining')
+            if 1 < len(self.workspace) <= ws_print_condition:
                 for element in self.workspace:
                     print(f'\t\t{element["word"]}')
-            print(f'\t{len(self.workspace)} words remaining')
             print(f'\t{info_gained} bits of information gained')
             print(f'\t{total_info_gained} total bits of information gained')
             num_guesses += 1
@@ -148,4 +148,4 @@ class FiveLetters:
 
 if __name__ == '__main__':
     fl = FiveLetters()
-    fl.live_analysis(ws_print_condition=50)
+    fl.live_analysis()
