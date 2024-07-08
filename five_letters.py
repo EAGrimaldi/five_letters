@@ -81,7 +81,6 @@ class FiveLetters:
                         clauses.append(f'^[^{letter}]*{letter}[^{letter}]*$')
                         # will FAIL if 2 letters are _
                         # example: '^[^x]*x[^x]*$'
-                        # TODO find a better way to handle double letter words
                     else:
                         logging.warning('trips? impossible...')
                 case 'b':
@@ -93,7 +92,6 @@ class FiveLetters:
                         clauses.append(f'{letter}[^{letter}]*{letter}')
                         # will FAIL if 1 letter is _
                         # example: 'x[^x]*x'
-                        # TODO find a better way to handle double letter words
                     else:
                         logging.warning('trips? impossible...')
         return '|'.join(clauses)
@@ -150,4 +148,4 @@ class FiveLetters:
 
 if __name__ == '__main__':
     fl = FiveLetters()
-    fl.live_analysis(ws_print_condition=100)
+    fl.live_analysis(ws_print_condition=50)
