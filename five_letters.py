@@ -15,7 +15,7 @@ class FiveLetters:
     def __init__(self) -> None:
         with open(Path(__file__).parent / 'five_letters_clean.json', 'r') as data_file:
             self.data = json.load(data_file)
-            logging.warning(f'loaded {len(self.data)} five letter words from Datamuse. note: Datamuse contains many common acronyms that do not qualify as normal words.')
+            logging.warning(f'loaded {len(self.data)} five letter words from Datamuse. note: Datamuse contains many names, acronyms, etc that do not qualify as normal words.')
             self.reset_workspace()
         self.final_messages = {
             -1: 'oof...',
