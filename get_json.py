@@ -27,12 +27,12 @@ def get_json() -> None:
 
 def clean_json() -> None:
     with open(Path(__file__).parent / 'five_letters.json', 'r') as data_file:
-        data = [element for element in json.load(data_file) if re.match('^[a-z]{5}$', element["word"])]
+        data = [element for element in json.load(data_file) if re.match('^[a-z]{5}$', element['word'])]
     # TODO remove all the acronyms and nonsense words
     with open(Path(__file__).parent / 'five_letters_clean.json', 'w') as data_file:
         data_file.write(json.dumps(data, sort_keys=True, indent=4))
             
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     get_json()
     clean_json()
