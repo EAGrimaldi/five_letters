@@ -164,7 +164,7 @@ class FiveLetters:
             guess_with_color = self.apply_color(guess, color_string)
             print(f'guess {guess_number}: {guess_with_color}')
             print(f'\t{len(self.workspace)} words remaining')
-            if 1 < len(self.workspace) <= print_threshold:
+            if color_string != 'ggggg' and len(self.workspace) <= print_threshold:
                 for element in self.workspace:
                     print(f'\t\t{element["word"]}')
             print(f'\t{info_gained} bits of information gained')
@@ -186,15 +186,15 @@ class FiveLetters:
             info_gained = self.apply_guess(guess, color_string)
             total_info_gained += info_gained
             guess_with_color = self.apply_color(guess, color_string)
+            guess_number += 1
+            solved = True if color_string == 'ggggg' else False
             print(f'guess {guess_number}: {guess_with_color}')
             print(f'\t{len(self.workspace)} words remaining')
-            if 1 < len(self.workspace) <= print_threshold:
+            if not solved and len(self.workspace) <= print_threshold:
                 for element in self.workspace:
                     print(f'\t\t{element["word"]}')
             print(f'\t{info_gained} bits of information gained')
             print(f'\t{total_info_gained} total bits of information gained')
-            guess_number += 1
-            solved = True if color_string == 'ggggg' else False
         final_message = f'solved in {guess_number} - {self.final_messages[guess_number]}' if solved else self.final_messages[-1]
         print(final_message)
 
